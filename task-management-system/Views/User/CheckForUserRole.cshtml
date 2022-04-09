@@ -1,0 +1,26 @@
+﻿@model dynamic
+
+@if (ViewBag.IsInRole == null) {
+    <form asp-action="CheckForUserRole">
+        <div class="form-group">
+            <label for="User" class="label-control">User</label>
+            <select class="form-control" name="userId" asp-items="@ViewBag.users"></select>
+        </div>
+        <div class="form-group">
+            <label for="Role" class="label-control">Role</label>
+            <select class="form-control" name="roleId" asp-items="@ViewBag.roles"></select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Add Role" class="btn btn-primary" />
+        </div>
+    </form>
+}
+
+@if (ViewBag.IsInRole != null) {
+    @if (ViewBag.IsInRole) {
+        <p>User @Model.UserName is a @ViewBag.Role.Name</p>
+    }
+    else {
+        <p>User @Model.UserName is not a @ViewBag.Role.Name</p>
+    }
+}

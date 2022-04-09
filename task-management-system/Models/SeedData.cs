@@ -13,7 +13,7 @@ namespace task_management_system.Models
             var _userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 
             List<string> roles = new List<string> {
-                "Admin", "ProjectManager", "Developer"
+                "Admin", "ProjectManager", "Developer", "User"
             };
 
             if (!_context.Roles.Any())
@@ -33,6 +33,8 @@ namespace task_management_system.Models
                     NormalizedEmail = "ADMIN@TASK-MANAGEMENT.COM",
                     NormalizedUserName = "ADMIN@TASK-MANAGEMENT.COM",
                     EmailConfirmed = true,
+                    Salary = 7000,
+                    PaymentDuration = User.PaymentDurationType.Monthly
                 };
 
                 var password = new PasswordHasher<User>();
@@ -46,6 +48,8 @@ namespace task_management_system.Models
                     NormalizedEmail = "JAGRAJ@TASK-MANAGEMENT.COM",
                     NormalizedUserName = "JAGRAJ@TASK-MANAGEMENT.COM",
                     EmailConfirmed = true,
+                    Salary = 6000,
+                    PaymentDuration = User.PaymentDurationType.Monthly
                 };
 
                 var jagrajHashed = password.HashPassword(jagraj, "P@ssword!12");
@@ -58,6 +62,8 @@ namespace task_management_system.Models
                     NormalizedEmail = "SAHIL@TASK-MANAGEMENT.COM",
                     NormalizedUserName = "SAHIL@TASK-MANAGEMENT.COM",
                     EmailConfirmed = true,
+                    Salary = 4000,
+                    PaymentDuration = User.PaymentDurationType.Monthly
                 };
 
                 var sahilHashed = password.HashPassword(sahil, "P@ssword!12");
@@ -70,6 +76,8 @@ namespace task_management_system.Models
                     NormalizedEmail = "PRATEEK@TASK-MANAGEMENT.COM",
                     NormalizedUserName = "PRATEEK@TASK-MANAGEMENT.COM",
                     EmailConfirmed = true,
+                    Salary = 1000,
+                    PaymentDuration = User.PaymentDurationType.BiWeekly
                 };
 
                 var prateekHashed = password.HashPassword(prateek, "P@ssword!12");
@@ -82,6 +90,8 @@ namespace task_management_system.Models
                     NormalizedEmail = "TAIMOOR@TASK-MANAGEMENT.COM",
                     NormalizedUserName = "TAIMOOR@TASK-MANAGEMENT.COM",
                     EmailConfirmed = true,
+                    Salary = 10000,
+                    PaymentDuration = User.PaymentDurationType.Contract
                 };
 
                 var taimoorHashed = password.HashPassword(taimoor, "P@ssword!12");
