@@ -21,6 +21,10 @@ namespace task_management_system.Controllers
             {
                 return RedirectToAction("Index", "Task");
             }
+            else if (User.IsInRole("ProjectManager"))
+            {
+                return RedirectToAction("Index", "Project");
+            }
             return View();
         }
 

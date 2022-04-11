@@ -41,6 +41,24 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="GetRolesOfAUser">GetRolesOfAUser</a>
                                 </li>
                             }
+                            @if(@Context.Request.Path != "/Project/Create")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Create">Create Project</a>
+                                </li>
+                            }
+                            @if(@Context.Request.Path == "/ProjectManager")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="AddDeveloperToProject">AddDeveloperToProject</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="ProjectExceedingBudget">ProjectExceedingBudget</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="NotFinishedPassedDeadline">NotFinishedPassedDeadline</a>
+                                </li>
+                            }
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

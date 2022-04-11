@@ -5,6 +5,12 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public string Body { get; set; }
+
+        public DateTime Deadline { get; set; }
+
+        public decimal Budget { get; set; }
+
+        public decimal MoneySpent { get; set; }  
         public decimal CompletionPercentage { get; set; }
         public DateTime CreatedAt { get; init; }
 
@@ -21,10 +27,13 @@
             ProjectDevelopers = new HashSet<ProjectDeveloper>();
         }
 
-        public Project(string name, string body , User projectManager)
+        public Project(string name, string body ,DateTime deadline, decimal budget, User projectManager)
         {
             Name = name;
             Body = body;
+            MoneySpent = 0;
+            Deadline = deadline;
+            Budget = budget;
             CreatedAt = DateTime.Now;
      
             ProjectManager = projectManager;
