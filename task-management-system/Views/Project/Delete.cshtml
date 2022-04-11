@@ -1,0 +1,11 @@
+﻿@model Project
+
+<div>
+    <label>Project</label>
+    <div>@Model.Name</div>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" class="btn btn-danger" value="Delete"/>
+</form>

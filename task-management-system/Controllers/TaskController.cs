@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using task_management_system.Data;
 using task_management_system.Models;
+using static task_management_system.Models.Task;
 using Task = System.Threading.Tasks.Task;
 
 namespace task_management_system.Controllers;
@@ -177,5 +179,178 @@ public class TaskController : Controller
         }
 
         return View(task);
+    }
+    // GET /Task/Create
+    public async Task<IActionResult> Create(int? id)
+    {
+        if (id == null)
+        {
+            return BadRequest();
+        }
+
+        ViewBag.ProjectId = id;
+
+        var users = _userManager.Users;
+
+        List<User> developers = new();
+        foreach (var user in users)
+        {
+            if (await _userManager.IsInRoleAsync(user, "Developer"))
+            {
+                developers.Add(user);
+            }
+        }
+
+        ViewBag.Developers = new SelectList(developers, "Id", "UserName");
+
+
+        var priorities = from PriorityType p in Enum.GetValues(typeof(PriorityType))
+                         select new { ID = (int)p, Name = p.ToString() };
+        ViewBag.Priority = new SelectList(priorities, "ID", "Name");
+
+        ViewBag.Projects = new SelectList(_context.Projects.ToList(), "Id", "Name");
+        return View();
+    }
+
+    [Authorize(Roles = "ProjectManager")]
+    // POST /Task/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("Title,Content,ProjectId,DeveloperId,Priority,Deadline")] Models.Task task)
+    {
+        Project? project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == task.ProjectId);
+        var developer = await _userManager.FindByIdAsync(task.DeveloperId);
+
+        if (project == null || developer == null)
+        {
+            return NotFound();
+        }
+
+        Models.Task newTask = new(task.Title, task.Content, project,task.Deadline, developer, task.Priority);
+
+        try
+        {
+            await _context.Tasks.AddAsync(newTask);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    // GET /Task/Edit{id}
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
+        {
+            return BadRequest();
+        }
+
+        var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+
+        return View(task);
+    }
+
+    [Authorize(Roles = "ProjectManager")]
+    // POST /Task/Edit
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(
+        int? id,
+        string title,
+        string content,
+        PriorityType priority,
+        DateTime deadline,
+        string developerId
+    )
+    {
+        if (id == null)
+        {
+            return BadRequest();
+        }
+
+        var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+
+        var developer = await _userManager.FindByIdAsync(developerId);
+
+        if (task == null || developer == null)
+        {
+            return NotFound();
+        }
+
+        task.Title = title;
+        task.Content = content;
+        task.Priority = priority;
+        task.Deadline = deadline;
+        task.Developer = developer;
+        task.DeveloperId = developer.Id;
+
+        try
+        {
+            _context.Tasks.Update(task);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("DashBoard", "Home");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    [Authorize(Roles = "ProjectManager")]
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return BadRequest();
+        }
+
+        var task = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (task == null)
+        {
+            return NotFound();
+        }
+
+        return View(task);
+    }
+
+    [Authorize(Roles = "ProjectManager")]
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int? id)
+    {
+        if (id == null)
+        {
+            return BadRequest();
+        }
+
+        var task = await _context
+            .Tasks
+            .Include(p => p.Notes)
+            //.Include(p => p.ProjectDevelopers)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (task == null)
+        {
+            return NotFound();
+        }
+
+        try
+        {
+            _context.Tasks.Remove(task);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Dashboard", "Home");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 }

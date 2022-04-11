@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Project>
+
+@if (Model.Any()) {
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Project Manager
+            </th>
+            <th>
+                Completion Percentage
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        @foreach (var project in @Model) {
+            <tr class="column">
+                <td>@project.Name</td>
+                <td>@project.ProjectManager?.UserName</td>
+                <td>@project.CompletionPercentage</td>
+                <td>
+                     <a asp-action="Details" asp-controller="Project" asp-route-id="@project.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else {
+    <p>There are no projects.</p>
+}

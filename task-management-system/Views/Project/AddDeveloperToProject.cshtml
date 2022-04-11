@@ -1,0 +1,15 @@
+﻿@model dynamic
+
+<form asp-action="AddDeveloperToProject">
+    <div class="form-group">
+        <label>Project</label>
+        <select class="form-control" name="projectId" asp-items="ViewBag.Projects" ></select>
+    </div>
+    <div class="form-group">
+        <label>Developer</label>
+        <select class="form-control" name="developerId" asp-items="ViewBag.Developers" ></select>
+    </div>
+    <div class="form-group">
+        <input class="btn btn-primary" type="submit" value="Submit" />
+    </div>
+</form>
