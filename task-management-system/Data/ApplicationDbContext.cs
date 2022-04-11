@@ -18,6 +18,7 @@ namespace task_management_system.Data {
         public DbSet<ProjectDeveloper> ProjectDevelopers { get; set; }
 
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
     }
 }

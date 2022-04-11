@@ -1,0 +1,35 @@
+﻿@model IEnumerable<task_management_system.Models.Task>
+
+@if (Model.Any()) {
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Project
+            </th>
+            <th>
+                Completion Percentage
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        @foreach (var task in @Model) {
+            <tr class="column">
+                <td>@task.Title</td>
+                <td>@task.Project?.Name</td>
+                <td>@task.CompletionPercentage</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Task" asp-route-id="@task.Id">Details</a>
+                    <a asp-action="UpdateCompletion" asp-controller="Task" asp-route-id="@task.Id">Update Completion</a>
+                    <a asp-action="LeaveNote" asp-controller="Task" asp-route-id="@task.Id">Leave Note</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else {
+    <p>No Tasks are available yet.</p>
+}

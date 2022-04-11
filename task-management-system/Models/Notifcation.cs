@@ -7,6 +7,7 @@
         public string Body { get; set; }
         public User? User { get; set; }
         public string? UserId { get; set; }
+        public bool IsOpened { get; set; }
         public DateTime CreatedAt { get; init; }
 
         public Notification() { }

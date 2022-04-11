@@ -1,25 +1,24 @@
 ﻿namespace task_management_system.Models
 {
-    public class Note
+    public class Comment
     {
         public int Id { get; set; }
         public string Body { get; set; }
-        public virtual User? User { get; set; }
+        public virtual Note Note { get; set; }
+        public int? NoteId { get; set; }
+        public virtual User User { get; set; }
         public string? UserId { get; set; }
-        public virtual Task? Task { get; set; }
-        public int? TaskId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
 
-        public Note() { }
+        public Comment() { }
 
-        public Note(string body, User user, Task task)
+        public Comment(string body, Note note, User user)
         {
             Body = body;
+            Note = note;
+            NoteId = note.Id;
             User = user;
             UserId = user.Id;
-            Task = task;
-            TaskId = task.Id;
             CreatedAt = DateTime.Now;
         }
     }
