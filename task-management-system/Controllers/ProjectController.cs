@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using task_management_system.Data;
 using task_management_system.Models;
-using task_management_system.Controllers;
+
+namespace task_management_system.Controllers;
 
 [Authorize(Roles = "ProjectManager")]
 public class ProjectController : Controller
@@ -39,6 +40,8 @@ public class ProjectController : Controller
             .Include(p => p.ProjectManager)
             .Include(p => p.Tasks)
             .ThenInclude(t => t.Developer)
+            .Include(p => p.ProjectDevelopers)
+            .ThenInclude(pd => pd.Developer)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (project == null)
@@ -65,7 +68,6 @@ public class ProjectController : Controller
         return View();
     }
     
-
     // POST /Project/Create
     [HttpPost]
     public async Task<IActionResult> Create([Bind("Name,Body,ProjectManagerId,Deadline,Budget")] Project project)
@@ -265,4 +267,3 @@ public class ProjectController : Controller
         return View(tasks);
     }
 }
-

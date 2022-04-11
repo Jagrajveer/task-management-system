@@ -257,7 +257,7 @@ namespace task_management_system.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("task_management_system.Models.Note", b =>
@@ -287,7 +287,7 @@ namespace task_management_system.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("task_management_system.Models.Notification", b =>
@@ -319,7 +319,7 @@ namespace task_management_system.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("task_management_system.Models.Project", b =>
@@ -360,7 +360,7 @@ namespace task_management_system.Data.Migrations
 
                     b.HasIndex("ProjectManagerId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("task_management_system.Models.ProjectDeveloper", b =>
@@ -386,7 +386,7 @@ namespace task_management_system.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("ProjectDevelopers");
+                    b.ToTable("ProjectDevelopers", (string)null);
                 });
 
             modelBuilder.Entity("task_management_system.Models.Task", b =>
@@ -432,7 +432,7 @@ namespace task_management_system.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("task_management_system.Models.User", b =>

@@ -69,7 +69,11 @@ public class TaskController : Controller
             return BadRequest();
         }
 
-        var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+        var task = await _context
+            .Tasks
+            .Include(t => t.Project)
+            .ThenInclude(p => p.ProjectManager)
+            .FirstOrDefaultAsync(t => t.Id == id);
 
 
         if (task == null)
@@ -81,6 +85,8 @@ public class TaskController : Controller
         if (task.CompletionPercentage == 100)
         {
             task.IsCompleted = isCompleted;
+            Notification newNotification = new("Task completed", $"Task {task.Title} is completed", task.Project.ProjectManager);
+            _context.Notifications.Add(newNotification);
         }
 
         try
@@ -116,7 +122,11 @@ public class TaskController : Controller
     [Route("/Developer/Task/{id}/LeaveNote")]
     public async Task<IActionResult> LeaveNote([Bind("Body,TaskId")] Note note)
     {
-        var task = await _context.Tasks.FindAsync(note.TaskId);
+        var task = await _context
+            .Tasks
+            .Include(t => t.Project)
+            .ThenInclude(p => p.ProjectManager)
+            .FirstOrDefaultAsync(t => t.Id == note.TaskId);
         var user = await _userManager.GetUserAsync(User);
         if (task == null)
         {
@@ -125,9 +135,15 @@ public class TaskController : Controller
 
         Note newNote = new(note.Body, user, task);
 
+        Notification newNotification = new();
+
+        newNotification.Title = $"Note by {user.UserName}";
+        newNotification.Body = $"{newNote.Body}";
+        newNotification.UserId = task.Project?.ProjectManagerId;
         try
         {
             _context.Notes.Add(newNote);
+            _context.Notifications.Add(newNotification);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }
@@ -138,6 +154,20 @@ public class TaskController : Controller
         }
     }
 
+    public async Task<IActionResult> NoteDetails(int? id) {
+        if (id == null) {
+            return BadRequest();
+        }
+
+        var note = await _context.Notes.FirstOrDefaultAsync(n => n.Id == id);
+
+        if (note == null) {
+            return NotFound();
+        }
+        
+        return View(note);
+    }
+    
     [Authorize(Roles = "Developer")]
     public async Task<IActionResult> CommentOnNote(int? id)
     {
@@ -293,7 +323,7 @@ public class TaskController : Controller
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("DashBoard", "Home");
+            return RedirectToAction("Index", "Home");
         }
         catch (Exception e)
         {
@@ -344,7 +374,7 @@ public class TaskController : Controller
         {
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Dashboard", "Home");
+            return RedirectToAction("Index", "Home");
         }
         catch (Exception e)
         {

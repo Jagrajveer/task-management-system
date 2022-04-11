@@ -60,38 +60,42 @@
         </dd>
     </dl>
     <div>
-        @if (Model.Tasks.Any()) {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>
-                Title
-            </th>
-            <th>
-                Project
-            </th>
-            <th>
-                Completion Percentage
-            </th>
-            <th></th>
-        </tr>
-        </thead>
-        @foreach (var task in @Model.Tasks) {
-            <tr class="column">
-                <td>@task.Title</td>
-                <td>@task.Project?.Name</td>
-                <td>@task.CompletionPercentage</td>
-                <td>
-                    <a asp-action="Details" asp-controller="Task" asp-route-id="@task.Id">Details</a>
-                </td>
-            </tr>
+        @if (Model.ProjectDevelopers.Any()) {
+            <h3>Developers</h3>
+            @foreach (var developer in Model.ProjectDevelopers) {
+                <div>@developer.Developer?.UserName</div>
+            }
         }
-    </table>
-}
+    </div>
+    <div>
+        @if (Model.Tasks.Any()) {
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Project
+                    </th>
+                    <th>
+                        Completion Percentage
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                @foreach (var task in @Model.Tasks) {
+                    <tr class="column">
+                        <td>@task.Title</td>
+                        <td>@task.Project?.Name</td>
+                        <td>@task.CompletionPercentage</td>
+                        <td>
+                            <a asp-action="Details" asp-controller="Task" asp-route-id="@task.Id">Details</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
     </div>
 
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>
