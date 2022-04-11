@@ -13,6 +13,8 @@ namespace task_management_system.Models
         public virtual ICollection<Notification> Notifications { get; set; }
 
         public virtual ICollection<Note> Notes { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+
 
         public enum PaymentDurationType {
             Hourly = 1,

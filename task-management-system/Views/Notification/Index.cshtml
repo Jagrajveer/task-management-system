@@ -1,0 +1,10 @@
+﻿@model IEnumerable<task_management_system.Models.Notification>
+
+<h1>Notifications</h1>
+<ul>
+    @foreach (var notification in @Model) {
+        <li>
+            <a asp-action="Details" asp-route-id="@notification.Id">@notification.Title</a>
+        </li>
+    }
+</ul>

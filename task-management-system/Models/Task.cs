@@ -12,6 +12,7 @@
 
         public virtual User? Developer { get; set; }
         public string? DeveloperId { get; set; }
+        public bool IsCompleted { get; set; }
         public DateTime CreatedAt { get; init; }
         public virtual ICollection<Note> Notes { get; set; }
 

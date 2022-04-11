@@ -1,0 +1,56 @@
+﻿@model task_management_system.Models.Task
+
+<div>
+    <div>
+        <div>
+            <label>Title:</label>
+            <h1>@Model.Title</h1>
+        </div>
+        <div>
+            <label>Body:</label>
+            <p>@Model.Content</p>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: space-evenly">
+        <div>
+            <div>
+                <label>Project:</label>
+                <p>@Model.Project?.Name</p>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>Developer:</label>
+                <p>@Model.Developer</p>
+            </div>
+            <div>
+                <label>IsCompleted:</label>
+                <p>@Model.IsCompleted</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (@Model.Notes.Any()) {
+    <h2>Notes</h2>
+    <div class="tasks">
+        @foreach (var note in @Model.Notes) {
+            <div class="task">
+                <div>
+                    <p>@note.Body</p>
+                    <div><span>User:</span> @note.User</div>
+                </div>
+                <a asp-action="Create" asp-controller="Comment" asp-route-id="@note.Id">Comment</a>
+            </div>
+            @if (note.Comments.Any()) {
+                <div>
+                    <h4>Comments</h4>
+                    @foreach (var comment in note.Comments) {
+                        <p>@comment.Body</p>
+                        <div>@comment.User</div>
+                    }
+                </div>
+            }
+        }
+    </div>
+}
